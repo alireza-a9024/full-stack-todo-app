@@ -31,7 +31,7 @@ public class SwaggerConfig {
         return GroupedOpenApi
                 .builder()
                 .displayName("App API List")
-                // Updated to match your pom.xml artifactId
+                
                 .packagesToScan("com.example.todoback.controllers") 
                 .group("Public API")
                 .addOpenApiCustomizer(statusApiCustomizer())
