@@ -1,0 +1,90 @@
+<nav class="navbar navbar-dark bg-dark mb-5 shadow-sm">
+  <div class="container">
+    <span class="navbar-brand mb-0 h1">My Tasks</span>
+    <div class="d-flex align-items-center">
+      <span class="text-light me-3">Welcome, {{ fullName }}</span>
+      <button class="btn btn-outline-light btn-sm" (click)="logout()">Log Out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm mb-4 border-0">
+        <div class="card-body">
+          <div class="input-group input-group-lg">
+            <input
+              #taskInput
+              type="text"
+              class="form-control bg-light border-0"
+              placeholder="What needs to be done?"
+            />
+            <button class="btn btn-primary px-4" (click)="addTask(taskInput)">Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <ul class="list-group list-group-flush rounded">
+          <li
+            class="list-group-item d-flex justify-content-between align-items-center py-3"
+            *ngFor="let task of tasks"
+          >
+            <div class="d-flex align-items-center flex-grow-1 me-3">
+              <input
+                class="form-check-input mt-0 me-3 custom-checkbox"
+                type="checkbox"
+                [checked]="task.status === 'DONE'"
+                
+                (change)="toggleDone(task)"
+              />
+
+
+              <span
+                *ngIf="editingTaskId !== task.id"
+                [class.text-decoration-line-through]="task.status === 'DONE'"
+                [class.text-muted]="task.completed"
+                class="fs-5"
+              >
+              
+                {{ task.title }}
+              </span>
+              
+
+              <input
+                *ngIf="editingTaskId === task.id"
+                [value]="editingTaskTitle"
+                (input)="onEditInput($event)"
+                class="form-control border-primary"
+              />
+            </div>
+
+            <div class="text-nowrap">
+              <ng-container *ngIf="editingTaskId !== task.id">
+                <button class="btn btn-sm btn-outline-secondary me-2" (click)="startEdit(task)">
+                  Edit
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task.id)">
+                  Delete
+                </button>
+              </ng-container>
+
+              <ng-container *ngIf="editingTaskId === task.id">
+                <button class="btn btn-sm btn-success me-2" (click)="saveEdit(task)">Save</button>
+                <button class="btn btn-sm btn-secondary" (click)="editingTaskId = null">
+                  Cancel
+                </button>
+              </ng-container>
+            </div>
+          </li>
+        </ul>
+
+        <div class="card-body text-center text-muted py-5" *ngIf="tasks.length === 0">
+          <h5 class="fw-light">No tasks yet.</h5>
+          <p class="mb-0">Type above to add your first task!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
